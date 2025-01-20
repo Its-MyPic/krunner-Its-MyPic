@@ -9,7 +9,7 @@ This way the Python script gets executed when KRunner requests matches and it do
 mkdir -p ~/.local/share/krunner/dbusplugins/
 cp its_mypic.desktop ~/.local/share/krunner/dbusplugins/
 kquitapp6 krunner
-python3 its_mypic.py
+python3 main.py
 ```
 
 After that you should see your runner when typing `hello` in KRunner.

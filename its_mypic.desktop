@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=It's MyPic
+Comment=It's MyPic Runner written in Python
+Type=Service
+Icon=planetkde
+X-KDE-PluginInfo-Author=jeff
+X-KDE-PluginInfo-Email=jeffpeng2012@gmail.com
+X-KDE-PluginInfo-Name=It's MyPic
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-License=LGPL
+X-KDE-PluginInfo-EnabledByDefault=true
+X-Plasma-API=DBus
+X-Plasma-DBusRunner-Service=org.kde.its_mypic

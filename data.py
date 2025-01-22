@@ -33,7 +33,7 @@ class Data:
     def __init__(self):
         self.pluginPath = Path(__file__).parent.as_posix()
         print(self.pluginPath)
-        with open(f"{self.pluginPath}/data.json") as f:
+        with open(f"{self.pluginPath}/data/data.json") as f:
             self.data:list[SubtitleInfo] = load(f, object_hook=lambda x: SubtitleInfo.from_dict(x))
         historyFile = Path(f"{self.pluginPath}/history.json")
         if historyFile.exists():

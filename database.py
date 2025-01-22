@@ -1,7 +1,9 @@
 from dataclasses import dataclass, field, asdict
 from json import load, dump
 from pathlib import Path
-
+from requests import get
+from concurrent import futures
+from pprint import pprint
 version = hash("なんで春日影やったの！？")
 
 @dataclass
@@ -28,6 +30,16 @@ class SubtitleInfo:
             eposode=data["episode"],
             frame_start=data["frame_start"],
         )
+    
+    def to_result(self, pluginPath:str):
+        return (
+            self.fileName,
+            f"{self.text}",
+            f"{pluginPath}/image/{self.eposode}_{self.frame_start}.jpg",
+            100,
+            self.usedcount,
+            {},
+        )
 
 class Data:
     def __init__(self):
@@ -51,16 +63,30 @@ class Data:
         with open(f"{self.pluginPath}/history.json", "w") as f:
             dump(asdict(self.history), f)
 
-    def query(self, text:str) -> list[tuple]:
-        text = text.replace("妳", "你").lower()
-        filter(lambda x: text in x.text, self.data)
-        for i, subtitle in enumerate(self.data):
-            if subtitle.text == text:
-                self.history.History[i] += 1
-                return subtitle
-        return []
+    def query(self, text:str) -> list[SubtitleInfo]:
+        if len(text):
+            text = text.replace("妳", "你").lower()
+            result = filter(lambda x: text in x.text, self.data)
+        else:
+            result = self.data
+        result = sorted(result, key=lambda x: x.usedcount, reverse=True)
+        result = result[:25]
+        self.prepareImage(result)
+        return result
+
+    def prepareImage(self, subtitle:list[SubtitleInfo]):
+        files = filter(lambda x: not Path(f"{self.pluginPath}/image/{x.fileName}").exists(), subtitle)
+        with futures.ThreadPoolExecutor() as executor:
+            executor.map(self.DownloadImage, files)
+
+    def DownloadImage(self, subtitle:SubtitleInfo):
+        print(subtitle.fileName)
+        url = f"https://media.githubusercontent.com/media/jeffpeng3/MyPicDB/assets/images/{subtitle.fileName}"
+        r = get(url)
+        with open(f"{self.pluginPath}/image/{subtitle.fileName}", "wb") as f:
+            f.write(r.content)
 
 
 
 if __name__ == "__main__":
-    Data()
+    pprint(Data().query("你"))

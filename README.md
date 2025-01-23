@@ -8,7 +8,7 @@ This way the Python script gets executed when KRunner requests matches and it do
 ## Installation
 
 ```bash
-git clone https://github.com/jeffpeng3/krunner-Its-MyPic.git
+git clone --recursive https://github.com/jeffpeng3/krunner-Its-MyPic.git
 cd krunner-Its-MyPic
 ./install.sh
 ```

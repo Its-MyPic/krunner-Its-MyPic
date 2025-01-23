@@ -60,6 +60,7 @@ class Data:
 
 
     def save(self):
+        self.history.History = [x.usedcount for x in self.data]
         with open(f"{self.pluginPath}/history.json", "w") as f:
             dump(asdict(self.history), f)
 

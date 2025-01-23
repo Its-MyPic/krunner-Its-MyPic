@@ -5,6 +5,8 @@ import dbus.service
 from dbus.mainloop.glib import DBusGMainLoop
 from gi.repository import GLib
 from database import Data, SubtitleInfo
+from subprocess import check_output
+from shlex import quote
 
 
 DBusGMainLoop(set_as_default=True)
@@ -20,9 +22,7 @@ class Runner(dbus.service.Object):
         )
         self.data = Data()
         self.pluginPath = Path(__file__).parent.as_posix()
-        self.clipboard = dbus.SessionBus().get_object("org.kde.klipper", "/klipper")
-        klipper = dbus.Interface(self.clipboard, "org.kde.klipper.klipper")
-        klipper.setClipboardContents("123")
+        self.counter = 0
 
     @dbus.service.method(iface, in_signature="s", out_signature="a(sssida{sv})")
     def Match(self, query: str):
@@ -54,9 +54,14 @@ class Runner(dbus.service.Object):
         if data not in actionTable:
             print("Not found")
             return
+        cmd = f'cat {self.pluginPath}/image/{quote(actionTable[data].fileName)} | ./clipper'
+        print(cmd)
+        check_output(cmd, shell=True)
         actionTable[data].usedcount += 1
-        print(actionTable[data])
-
+        self.counter += 1
+        if self.counter > 5:
+            self.data.save()
+            self.counter = 0
 
 
 runner = Runner()

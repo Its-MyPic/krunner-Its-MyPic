@@ -57,6 +57,9 @@ class Data:
             self.history = History(Version=version, History=[0] * len(self.data))
         for i, subtitle in enumerate(self.data):
             subtitle.usedcount = self.history.History[i]
+        if not Path(f"{self.pluginPath}/image").exists():
+            print("Create image folder")
+            Path(f"{self.pluginPath}/image").mkdir()
 
 
     def save(self):

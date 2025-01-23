@@ -56,7 +56,7 @@ class Runner(dbus.service.Object):
             return
         cmd = f'cat {self.pluginPath}/image/{quote(actionTable[data].fileName)} | ./clipper'
         print(cmd)
-        check_output(cmd, shell=True)
+        check_output(cmd, shell=True, cwd=self.pluginPath)
         actionTable[data].usedcount += 1
         self.counter += 1
         if self.counter > 5:

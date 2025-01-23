@@ -23,6 +23,7 @@ class Runner(dbus.service.Object):
         self.data = Data()
         self.pluginPath = Path(__file__).parent.as_posix()
         self.counter = 0
+        check_output(f"chmod +x {self.pluginPath}/clipper", shell=True)
 
     @dbus.service.method(iface, in_signature="s", out_signature="a(sssida{sv})")
     def Match(self, query: str):

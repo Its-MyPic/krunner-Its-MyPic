@@ -4,7 +4,7 @@ from pathlib import Path
 from requests import get
 from concurrent import futures
 from pprint import pprint
-version = hash("なんで春日影やったの！？")
+version = hash("我全都不會彈喔")
 
 @dataclass
 class History:

@@ -85,7 +85,7 @@ class Data:
 
     def DownloadImage(self, subtitle:SubtitleInfo):
         print(subtitle.fileName)
-        url = f"https://media.githubusercontent.com/media/jeffpeng3/MyPicDB/assets/images/{subtitle.fileName}"
+        url = f"https://mygodata.0m0.uk/images/{subtitle.fileName}"
         r = get(url)
         with open(f"{self.pluginPath}/image/{subtitle.fileName}", "wb") as f:
             f.write(r.content)
